@@ -28,16 +28,59 @@ class VendingMachine {
     Object.keys(this.inventory).forEach(key => {
       if (removableItem === key) {
         delete this.inventory[key];
-       this.inventory[newItem] = newItemValues;
-       return this.inventory
+        this.inventory[newItem] = newItemValues;
+        return this.inventory;
       }
     });
   }
 
+  addMoney(changeToResupply) {
+    Object.keys(changeToResupply).forEach(key => {
+      let addingCoins = changeToResupply[key].quantity;
+      while (addingCoins < 10) {
+        addingCoins++;
+      }
+      return (changeToResupply[key].quantity += addingCoins);
+    });
+  }
 
+  purchaseItem(cash, selection) {
+    //not fihished. should return change and item
+    if (cash > 10) {
+      return "Bills up to $10 dollars are accepted only";
+    }
+    let allItems = [];
+  
+    Object.keys(this.inventory).forEach(key => {
+      allItems.push(key);
+    });
+   
+    if (!allItems.includes(selection)) {
+      return "Item is not on sale, please make a different selection";
+    }
+    if(allItems.includes(selection) && this.inventory[selection].price === cash){
+        this.inventory[selection].quantity -= 1;
+        return selection
+    }
+    if(allItems.includes(selection) && this.inventory[selection].price > cash){
+        return "The item costs more than you provided"
+    }
 
-  purchaseItem(inventory, cash) {
-    consle.log("return item");
+    let coinAmounts = []
+    
+    Object.keys(this.change).forEach(key => {
+        coinAmounts.push(this.change[key].value * this.change[key].quantity)
+    })
+    let totalChange = coinAmounts.reduce((a,b) => a+b )
+
+    console.log(totalChange + this.inventory[selection].price < cash)
+    
+    if(totalChange + this.inventory[selection].price < cash){
+        return "We don't have enought change, please insert a smaller bill"
+    }
+
+    
+
   }
 }
 
