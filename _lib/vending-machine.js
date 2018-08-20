@@ -72,14 +72,52 @@ class VendingMachine {
         coinAmounts.push(this.change[key].value * this.change[key].quantity)
     })
     let totalChange = coinAmounts.reduce((a,b) => a+b )
-
-    console.log(totalChange + this.inventory[selection].price < cash)
     
     if(totalChange + this.inventory[selection].price < cash){
         return "We don't have enought change, please insert a smaller bill"
     }
-
+    if(totalChange + this.inventory[selection].price > cash){
+        let amtOwed = cash - this.inventory[selection].price
+        
+        let changeToReturn = {}
+        let amt = 0
+       
+        // if (amt < amtOwed){
+            Object.keys(this.change).forEach(key => {
+                // console.log(this.change[key].quantity)
+                // amt += this.change[key].value
+                // this.change[key].quantity--
+                while(amtOwed >= amt && this.change[key].quantity!== 0 && amtOwed - amt >=this.change[key].value ){
+                    
+                        amt += this.change[key].value
+                        this.change[key].quantity--
+                        console.log("AMOUNT", amt)
+                    
+                  
+                }
+                
     
+            //    while(this.change[key].quantity > 0 && this.change[key] !==0){
+            //         amt.push(this.change[key].value)
+            //        this.change[key].quantity-1
+            //        console.log(this.change[key].quantity)
+                   
+            //     }
+                
+               
+               
+            })
+        // }
+
+
+       
+    //   let changeAmt = amt.reduce((a,b)=> a+b)
+
+        console.log(totalChange)
+        console.log(amtOwed)
+        console.log(amt)
+    }
+   
 
   }
 }
