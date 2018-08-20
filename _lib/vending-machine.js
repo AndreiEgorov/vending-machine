@@ -50,75 +50,59 @@ class VendingMachine {
       return "Bills up to $10 dollars are accepted only";
     }
     let allItems = [];
-  
+
     Object.keys(this.inventory).forEach(key => {
       allItems.push(key);
     });
-   
+
     if (!allItems.includes(selection)) {
       return "Item is not on sale, please make a different selection";
     }
-    if(allItems.includes(selection) && this.inventory[selection].price === cash){
-        this.inventory[selection].quantity -= 1;
-        return selection
+    if (
+      allItems.includes(selection) &&
+      this.inventory[selection].price === cash
+    ) {
+      this.inventory[selection].quantity -= 1;
+      return selection;
     }
-    if(allItems.includes(selection) && this.inventory[selection].price > cash){
-        return "The item costs more than you provided"
+    if (
+      allItems.includes(selection) &&
+      this.inventory[selection].price > cash
+    ) {
+      return "The item costs more than you provided";
     }
 
-    let coinAmounts = []
-    
+    let coinAmounts = [];
+
     Object.keys(this.change).forEach(key => {
-        coinAmounts.push(this.change[key].value * this.change[key].quantity)
-    })
-    let totalChange = coinAmounts.reduce((a,b) => a+b )
-    
-    if(totalChange + this.inventory[selection].price < cash){
-        return "We don't have enought change, please insert a smaller bill"
+      coinAmounts.push(this.change[key].value * this.change[key].quantity);
+    });
+    let totalChange = coinAmounts.reduce((a, b) => a + b);
+
+    if (totalChange + this.inventory[selection].price < cash) {
+      return "We don't have enought change, please insert a smaller bill";
     }
-    if(totalChange + this.inventory[selection].price > cash){
-        let amtOwed = cash - this.inventory[selection].price
-        
-        let changeToReturn = {}
-        let amt = 0
-       
-        // if (amt < amtOwed){
-            Object.keys(this.change).forEach(key => {
-                // console.log(this.change[key].quantity)
-                // amt += this.change[key].value
-                // this.change[key].quantity--
-                while(amtOwed >= amt && this.change[key].quantity!== 0 && amtOwed - amt >=this.change[key].value ){
-                    
-                        amt += this.change[key].value
-                        this.change[key].quantity--
-                        console.log("AMOUNT", amt)
-                    
-                  
-                }
-                
-    
-            //    while(this.change[key].quantity > 0 && this.change[key] !==0){
-            //         amt.push(this.change[key].value)
-            //        this.change[key].quantity-1
-            //        console.log(this.change[key].quantity)
-                   
-            //     }
-                
-               
-               
-            })
-        // }
+    if (totalChange + this.inventory[selection].price > cash) {
+      this.inventory[selection].quantity -= 1;
+      let amtOwed = cash - this.inventory[selection].price;
+      let changeToReturn = {};
 
-
-       
-    //   let changeAmt = amt.reduce((a,b)=> a+b)
-
-        console.log(totalChange)
-        console.log(amtOwed)
-        console.log(amt)
+      let amt = 0;
+      Object.keys(this.change).forEach(key => {
+        let quant = 0;
+        while (
+          amtOwed >= amt &&
+          this.change[key].quantity !== 0 &&
+          amtOwed - amt >= this.change[key].value
+        ) {
+          quant += 1;
+          amt += this.change[key].value;
+          changeToReturn[key] = { quantity: quant };
+          this.change[key].quantity--;
+        }
+      });
+      return [selection, changeToReturn];
     }
-   
-
   }
 }
 
