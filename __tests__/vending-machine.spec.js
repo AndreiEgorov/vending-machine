@@ -101,49 +101,49 @@ describe("VendingMachine", () => {
 
     describe("When item is being purchased", () => {
       const vendingMachine = new VendingMachine(change, inventory);
-        describe("When cash exceeds $10", () => {
-          it("Should should tell that the amt is too big", () => {
-            expect(vendingMachine.purchaseItem(20, "doritos")).toEqual(
-              "Bills up to $10 dollars are accepted only"
-            );
-          });
+      describe("When cash exceeds $10", () => {
+        it("Should should tell that the amt is too big", () => {
+          expect(vendingMachine.purchaseItem(20, "doritos")).toEqual(
+            "Bills up to $10 dollars are accepted only"
+          );
         });
-        describe("When item selected is not on sale", () => {
-          it("Should should ask for different input", () => {
-            expect(vendingMachine.purchaseItem(2, "bounty")).toEqual(
-              "Item is not on sale, please make a different selection"
-            );
-          });
+      });
+      describe("When item selected is not on sale", () => {
+        it("Should should ask for different input", () => {
+          expect(vendingMachine.purchaseItem(2, "bounty")).toEqual(
+            "Item is not on sale, please make a different selection"
+          );
         });
+      });
 
-        describe("When even amt of cash is provided and item selected",() => {
-            it("Should return an item purchased and give change", ()=>{
-                expect(vendingMachine.purchaseItem(3.5,"doritos")).toEqual(
-                    "doritos"
-                )
-            })
-        })
-        describe("When not enought cash is provided", ()=> {
-            it("Should return an error", ()=>{
-                expect(vendingMachine.purchaseItem(2,"chips")).toEqual(
-                    "The item costs more than you provided"
-                )
-            })
-        })
+      describe("When even amt of cash is provided and item selected", () => {
+        it("Should return an item purchased and give change", () => {
+          expect(vendingMachine.purchaseItem(3.5, "doritos")).toEqual(
+            "doritos"
+          );
+        });
+      });
+      describe("When not enought cash is provided", () => {
+        it("Should return an error", () => {
+          expect(vendingMachine.purchaseItem(2, "chips")).toEqual(
+            "The item costs more than you provided"
+          );
+        });
+      });
 
-        describe("When not enought cash is provided", ()=> {
-          it("Should return an error", ()=>{
-              expect(vendingMachine.purchaseItem(2,"chips")).toEqual(
-                  "The item costs more than you provided"
-              )
-          })
-      })
+      describe("When not enought cash is provided", () => {
+        it("Should return an error", () => {
+          expect(vendingMachine.purchaseItem(2, "chips")).toEqual(
+            "The item costs more than you provided"
+          );
+        });
+      });
       describe("When  cash is provided and existing item selected", () => {
-        it("If there is not enough change, ask for smaller bill", ()=>{
-            expect(vendingMachine.purchaseItem(10,"gum",)).toEqual(
-                "We don't have enought change, please insert a smaller bill"
-            )
-        })
+        it("If there is not enough change, ask for smaller bill", () => {
+          expect(vendingMachine.purchaseItem(10, "gum")).toEqual(
+            "We don't have enought change, please insert a smaller bill"
+          );
+        });
 
         it("Should return an item and change, (return change as coins of different types)", () => {
           expect(vendingMachine.purchaseItem(6, "chips")).toEqual([
@@ -159,17 +159,16 @@ describe("VendingMachine", () => {
     });
   });
 
-    describe("change", () => {
-      const vendingMachine = new VendingMachine(change, inventory);
+  describe("change", () => {
+    const vendingMachine = new VendingMachine(change, inventory);
 
-      describe("When change type runs out", () => {
-        it("Should re-supply change", () => {
-          vendingMachine.addMoney(changeToResupply)
-          Object.keys(changeToResupply).forEach(key => {
-             expect(changeToResupply[key].quantity).toEqual(10)
-          })
-
+    describe("When change type runs out", () => {
+      it("Should re-supply change", () => {
+        vendingMachine.addMoney(changeToResupply);
+        Object.keys(changeToResupply).forEach(key => {
+          expect(changeToResupply[key].quantity).toEqual(10);
         });
       });
     });
+  });
 });
